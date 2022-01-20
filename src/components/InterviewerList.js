@@ -4,9 +4,12 @@ import InterviewerListItem from "./InterviewerListItem";
 import classNames from "classnames";
 
 export default function InterviewerList (props) {
-  const { interviewers, setInterviewer, interviewer } = props;
+  // const { interviewers, setInterviewer, interviewer } = props;
 
-  const renderInterviewerList = interviewers.map((oneInterviewer, index)=> <InterviewerListItem key={index} id={oneInterviewer.id} name={oneInterviewer.name} avatar={oneInterviewer.avatar} setInterviewer={()=>{setInterviewer(oneInterviewer.id)}} selected={oneInterviewer.id === interviewer} /> )
+  // const renderInterviewerList = interviewers.map((oneInterviewer, index)=> <InterviewerListItem key={index} id={oneInterviewer.id} name={oneInterviewer.name} avatar={oneInterviewer.avatar} setInterviewer={()=>{setInterviewer(oneInterviewer.id)}} selected={oneInterviewer.id === interviewer} /> )
+
+    const renderInterviewerList = props.map((interviewer)=> <InterviewerListItem key={interviewer.id} name={interviewer.name} avatar={interviewer.avatar} setInterviewer={()=>{onChange(interviewer.id)}} selected={interviewer.id === value} /> )
+
 
   return (
     <section className="interviewers">
