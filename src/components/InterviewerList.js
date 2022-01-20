@@ -5,6 +5,8 @@ import classNames from "classnames";
 
 export default function InterviewerList (props) {
   // const { interviewers, setInterviewer, interviewer } = props;
+  const { interviewers, onChange, value } = props;
+
 
   // const renderInterviewerList = interviewers.map((oneInterviewer, index)=> <InterviewerListItem key={index} id={oneInterviewer.id} name={oneInterviewer.name} avatar={oneInterviewer.avatar} setInterviewer={()=>{setInterviewer(oneInterviewer.id)}} selected={oneInterviewer.id === interviewer} /> )
 
