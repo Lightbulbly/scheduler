@@ -3,7 +3,7 @@ import DayList from "./DayList";
 import "../styles/Application.scss";
 import Appointment from "./Appointment/index.js";
 import axios from "axios";
-import getAppointmentsForDay from "../helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "../helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
@@ -33,9 +33,20 @@ export default function Application(props) {
     setState({ ...state, day });
   };
 
-  const appointmentsForDay = getAppointmentsForDay(state, state.day);
-  const renderAppointments = appointmentsForDay.map((appointment, index) => {
-    return <Appointment key={index} {...appointment} />;
+  // const appointmentsForDay = getAppointmentsForDay(state, state.day);
+  // const renderAppointments = appointmentsForDay.map((appointment, index) => {
+  //   return <Appointment key={index} {...appointment} />;
+  // });
+
+  const appointments = getAppointmentsForDay(state, state.day);
+
+  const schedule = appointments.map((appointment, index) => {
+    // console.log("appointment", appointment);
+    // console.log("appointment.interview", appointment.interview);
+
+    const interview = getInterview(state, appointment.interview);
+    console.log("here", interview);
+    return <Appointment key={index} {...appointment} interview={interview} />;
   });
 
   return (
@@ -59,7 +70,8 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {/* map over the appointments array to create a list in the schedule section. */}
-        {renderAppointments}
+        {/* {renderAppointments} */}
+        {schedule}
       </section>
     </main>
   );
