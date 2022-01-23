@@ -45,13 +45,15 @@ export default function Application(props) {
     // console.log("appointment.interview", appointment.interview);
 
     const interview = getInterview(state, appointment.interview);
-    console.log(typeof interview, interview);
+    console.log("here", typeof interview, interview);
 
     return (
       <Appointment
         key={index}
         {...appointment}
-        interview={interview || {}}
+        // interview={interview || {}}
+        interview={interview}
+
         // {...interview}
       />
     );
