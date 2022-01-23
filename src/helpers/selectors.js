@@ -78,4 +78,23 @@ export const getInterview = function (state, interview) {
   return result;
 };
 
+export const getInterviewersForDay = function (state, day) {
+  //... returns an array of interviewers for that day
+
+  let filteredDays = state.days.filter((singleDay) => singleDay.name === day);
+
+  // console.log("filteredDays here", filteredDays);
+  if (filteredDays.length === 0) {
+    return [];
+  }
+  let resultInterviewers = [];
+  for (const key in state.interviewers) {
+    if (filteredDays[0].interviewers.includes(Number(key))) {
+      resultInterviewers.push(state.interviewers[key]);
+    }
+  }
+  // console.log(resultInterviewers);
+  return resultInterviewers;
+};
+
 // module.exports = { getAppointmentsForDay, getInterview };
