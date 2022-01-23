@@ -45,7 +45,7 @@ export default function Application(props) {
     // console.log("appointment.interview", appointment.interview);
 
     const interview = getInterview(state, appointment.interview);
-    console.log(typeof interview);
+    console.log(typeof interview, interview);
 
     return (
       <Appointment
