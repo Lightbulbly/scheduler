@@ -4,19 +4,41 @@ import Header from "./Header";
 import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
+import Status from "./Status";
 
 import useVisualMode from "../../hooks/useVisualMode";
 export default function Appointment(props) {
-  const { id, time, interview, interviewers } = props;
+  const { id, time, interview, interviewers, bookInterview, cancelInterview } =
+    props;
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
   const CREATE = "CREATE";
+  const SAVING = "SAVING";
+
+  const save = function (name, interviewer) {
+    // console.log("line 16 in application js");
+    const interview = {
+      student: name,
+      interviewer,
+    };
+    // console.log(interview.student, interviewer.name);
+    transition(SAVING);
+    bookInterview(id, interview).then((res) => {
+      transition(SHOW);
+    });
+  };
+
+  const deleteAppointment = function (appointmentId) {
+    transition(SAVING);
+    cancelInterview(appointmentId).then((res) => {
+      transition(EMPTY);
+    });
+  };
 
   // console.log(id, time, interview);
   // console.log(interview);
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
-  console.log("check", interview);
   return (
     <article className="appointment">
       {/* time ? <article className="appointment"> Appointment at {props.time}</article> :<article className="appointment"> No Appointments
@@ -33,7 +55,13 @@ export default function Appointment(props) {
       )} */}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE, false)} />}
       {mode === SHOW && interview && (
-        <Show student={interview.student} interviewer={interview.interviewer} />
+        <Show
+          student={interview.student}
+          interviewer={interview.interviewer}
+          onDelete={() => {
+            deleteAppointment(id);
+          }}
+        />
       )}
       {mode === CREATE && (
         <Form
@@ -43,9 +71,13 @@ export default function Appointment(props) {
             back();
             back();
           }}
-          onSave={() => {}}
+          onSave={save}
+          // onSave={() => {
+          //   transition(SHOW, true);
+          // }}
         />
       )}
+      {mode === SAVING && <Status />}
     </article>
   );
 }

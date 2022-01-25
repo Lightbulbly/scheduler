@@ -19,9 +19,9 @@ export default function Application(props) {
 
   useEffect(() => {
     Promise.all([
-      axios.get("http://localhost:8001/api/days"),
-      axios.get("http://localhost:8001/api/appointments"),
-      axios.get("http://localhost:8001/api/interviewers"),
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
     ]).then((all) => {
       setState((prev) => ({
         ...prev,
@@ -53,6 +53,60 @@ export default function Application(props) {
     const interview = getInterview(state, appointment.interview);
     console.log("here", typeof interview, interview);
 
+    // pass bookInterview to each Appointment component as props.
+    const bookInterview = function (id, interview) {
+      console.log(id, interview);
+
+      const appointment = {
+        ...state.appointments[id],
+        interview: { ...interview },
+      };
+
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment,
+      };
+      return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
+        console.log("the state", state);
+        setState((prev) => ({
+          ...prev,
+          appointments,
+        }));
+      });
+      // .catch((error) => {
+      //   console.log(error.message);
+      // });
+    };
+
+    const cancelInterview = function (id) {
+      const appointment = {
+        ...state.appointments[id],
+        interview: null,
+      };
+
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment,
+      };
+      return axios
+        .delete(`/api/appointments/${id}`)
+        .then((res) => {
+          setState((prev) => ({
+            ...prev,
+            appointments,
+          }));
+        })
+        .catch((err) => console.log(err));
+    };
+    // const save = function (name, interviewer) {
+    //   console.log("line 64 in application js");
+    //   const interview = {
+    //     student: name,
+    //     interviewer,
+    //   };
+    //   console.log(interview.student, interviewer.name);
+    // };
+
     return (
       <Appointment
         key={index}
@@ -61,6 +115,9 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         // {...interview}
+        bookInterview={bookInterview}
+        // save={save}
+        cancelInterview={cancelInterview}
       />
     );
   });
