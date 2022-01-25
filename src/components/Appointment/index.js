@@ -17,6 +17,7 @@ export default function Appointment(props) {
   const SAVING = "SAVING";
   const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
+  const EDIT = "EDIT";
 
   const save = function (name, interviewer) {
     // console.log("line 16 in application js");
@@ -31,7 +32,7 @@ export default function Appointment(props) {
     });
   };
 
-  const handleClick = () => {
+  const handleClickConfirmBtn = () => {
     transition(CONFIRM);
   };
   const deleteAppointment = function () {
@@ -39,6 +40,10 @@ export default function Appointment(props) {
     cancelInterview(id).then((res) => {
       transition(EMPTY);
     });
+  };
+
+  const handleClickEditBtn = () => {
+    transition(EDIT);
   };
 
   // console.log(id, time, interview);
@@ -69,7 +74,8 @@ export default function Appointment(props) {
         <Show
           student={interview.student}
           interviewer={interview.interviewer}
-          onDelete={handleClick}
+          onDelete={handleClickConfirmBtn}
+          onEdit={handleClickEditBtn}
         />
       )}
       {mode === CREATE && (
@@ -84,6 +90,17 @@ export default function Appointment(props) {
           // onSave={() => {
           //   transition(SHOW, true);
           // }}
+        />
+      )}
+      {mode === EDIT && (
+        <Form
+          student={interview.student}
+          interviewer={interview.interviewer.id}
+          interviewers={interviewers}
+          onCancel={() => {
+            transition(SHOW);
+          }}
+          onSave={save}
         />
       )}
       {mode === SAVING && <Status message="Saving..." />}
