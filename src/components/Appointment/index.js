@@ -28,9 +28,9 @@ export default function Appointment(props) {
     });
   };
 
-  const deleteAppointment = function (appointmentId) {
+  const deleteAppointment = function () {
     transition(SAVING);
-    cancelInterview(appointmentId).then((res) => {
+    cancelInterview(id).then((res) => {
       transition(EMPTY);
     });
   };
@@ -58,9 +58,7 @@ export default function Appointment(props) {
         <Show
           student={interview.student}
           interviewer={interview.interviewer}
-          onDelete={() => {
-            deleteAppointment(id);
-          }}
+          onDelete={deleteAppointment}
         />
       )}
       {mode === CREATE && (
