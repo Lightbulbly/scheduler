@@ -88,15 +88,13 @@ export default function Application(props) {
         ...state.appointments,
         [id]: appointment,
       };
-      return axios
-        .delete(`/api/appointments/${id}`)
-        .then((res) => {
-          setState((prev) => ({
-            ...prev,
-            appointments,
-          }));
-        })
-        .catch((err) => console.log(err));
+      return axios.delete(`/api/appointments/${id}`).then((res) => {
+        setState((prev) => ({
+          ...prev,
+          appointments,
+        }));
+      });
+      // .catch((err) => Promise.reject(err));
     };
     // const save = function (name, interviewer) {
     //   console.log("line 64 in application js");

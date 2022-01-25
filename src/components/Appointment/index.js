@@ -6,6 +6,7 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 import useVisualMode from "../../hooks/useVisualMode";
 export default function Appointment(props) {
@@ -18,6 +19,8 @@ export default function Appointment(props) {
   const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
   const EDIT = "EDIT";
+  const ERROR_DELETE = "ERROR_DELETE";
+  const ERROR_SAVE = "ERROR_SAVE";
 
   const save = function (name, interviewer) {
     // console.log("line 16 in application js");
@@ -27,19 +30,30 @@ export default function Appointment(props) {
     };
     // console.log(interview.student, interviewer.name);
     transition(SAVING);
-    bookInterview(id, interview).then((res) => {
-      transition(SHOW);
-    });
+    bookInterview(id, interview)
+      .then(() => {
+        transition(SHOW);
+      })
+      .catch((err) => {
+        // console.log(err);
+        transition(ERROR_SAVE, true);
+      });
   };
 
   const handleClickConfirmBtn = () => {
     transition(CONFIRM);
   };
+
   const deleteAppointment = function () {
-    transition(DELETING);
-    cancelInterview(id).then((res) => {
-      transition(EMPTY);
-    });
+    transition(DELETING, true);
+    cancelInterview(id)
+      .then(() => {
+        transition(EMPTY);
+      })
+      .catch((err) => {
+        console.log(err);
+        transition(ERROR_DELETE, true);
+      });
   };
 
   const handleClickEditBtn = () => {
@@ -49,12 +63,7 @@ export default function Appointment(props) {
   // console.log(id, time, interview);
   // console.log(interview);
 
-  const { mode, transition, back } = useVisualMode(() => {
-    if (interview) {
-      return SHOW;
-    }
-    return EMPTY;
-  });
+  const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
   return (
     <article className="appointment">
       {/* time ? <article className="appointment"> Appointment at {props.time}</article> :<article className="appointment"> No Appointments
@@ -106,6 +115,7 @@ export default function Appointment(props) {
       {mode === SAVING && <Status message="Saving..." />}
       {mode === CONFIRM && (
         <Confirm
+          message="Are you sure you would like to delete?"
           onConfirm={deleteAppointment}
           onCancel={() => {
             transition(SHOW);
@@ -113,6 +123,26 @@ export default function Appointment(props) {
         />
       )}
       {mode === DELETING && <Status message="Deleting..." />}
+      {mode === ERROR_SAVE && (
+        <Error
+          message="Could not save appointment."
+          onClose={() => {
+            back();
+            back();
+            back();
+          }}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error
+          message="Could not delete appointment."
+          onClose={() => {
+            back();
+            back();
+            back();
+          }}
+        />
+      )}
     </article>
   );
 }
