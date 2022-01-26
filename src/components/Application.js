@@ -62,6 +62,7 @@ export default function Application(props) {
         {/* map over the appointments array to create a list in the schedule section. */}
         {/* {renderAppointments} */}
         {appointments}
+        <Appointment time={"5pm"} />
       </section>
     </main>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { getAppointmentsForDay } from "helpers/selectors";
+// import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData(initial) {
   const [state, setState] = useState({

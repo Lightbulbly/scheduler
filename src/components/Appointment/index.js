@@ -9,19 +9,24 @@ import Confirm from "./Confirm";
 import Error from "./Error";
 
 import useVisualMode from "../../hooks/useVisualMode";
+
+const EMPTY = "EMPTY";
+const SHOW = "SHOW";
+const CREATE = "CREATE";
+const SAVING = "SAVING";
+const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
+const ERROR_DELETE = "ERROR_DELETE";
+const ERROR_SAVE = "ERROR_SAVE";
+
 export default function Appointment(props) {
   const { id, time, interview, interviewers, bookInterview, cancelInterview } =
     props;
-  const EMPTY = "EMPTY";
-  const SHOW = "SHOW";
-  const CREATE = "CREATE";
-  const SAVING = "SAVING";
-  const DELETING = "DELETING";
-  const CONFIRM = "CONFIRM";
-  const EDIT = "EDIT";
-  const ERROR_DELETE = "ERROR_DELETE";
-  const ERROR_SAVE = "ERROR_SAVE";
-
+  const { mode, transition, back } = useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
+  console.log("appointment!", id, mode);
   const save = function (name, interviewer) {
     // console.log("line 16 in application js");
     const interview = {
@@ -63,21 +68,13 @@ export default function Appointment(props) {
   // console.log(id, time, interview);
   // console.log(interview);
 
-  const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
   return (
     <article className="appointment">
       {/* time ? <article className="appointment"> Appointment at {props.time}</article> :<article className="appointment"> No Appointments
   </article> */}
 
-      {/* <Header time={time} />
-      {interview ? (
-        <Show
-          student={interview.student}
-          interviewer={interview.interviewer.name}
-        />
-      ) : (
-        <Empty />
-      )} */}
+      <Header time={time} />
+
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE, false)} />}
       {mode === SHOW && interview && (
         <Show
