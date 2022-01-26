@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  getAppointmentsForDay,
+  // getInterview,
+  // getInterviewersForDay,
+} from "../helpers/selectors";
 
 export default function useApplicationData(initial) {
   const [state, setState] = useState({
@@ -35,9 +40,8 @@ export default function useApplicationData(initial) {
   // });
 
   // pass bookInterview to each Appointment component as props.
-  const bookInterview = function (id, interview) {
-    console.log(id, interview);
 
+  const bookInterview = function (id, interview) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -47,16 +51,44 @@ export default function useApplicationData(initial) {
       ...state.appointments,
       [id]: appointment,
     };
-    return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
-      console.log("the state", state);
-      setState((prev) => ({
-        ...prev,
-        appointments,
-      }));
-    });
-    // .catch((error) => {
-    //   console.log(error.message);
-    // });
+    console.log("here", id, interview);
+    console.log("appointments", appointments);
+    console.log("appointment", appointment);
+
+    const spotsLeft = function (appointments) {
+      // console.log(appointments);
+      // console.log(state.day);
+      // console.log(state.days);
+      let counter = 0;
+      state.days.forEach((ele) => {
+        if (ele.name === state.day) {
+          // console.log("here", day);
+          ele.appointments.forEach((appointment) => {
+            // console.log(appointment, appointments[appointment]);
+            if (appointments[appointment].interview === null) {
+              counter++;
+            }
+          });
+        }
+      });
+      setState({ state, spots: counter });
+      return counter;
+    };
+    return axios
+      .put(`/api/appointments/${id}`, appointment)
+      .then((res) => {
+        // console.log("1 the state", state);
+        // console.log("here?", appointments);
+        spotsLeft(appointments);
+        setState((prev) => ({
+          ...prev,
+          appointments,
+        }));
+        // console.log("2 the state", state);
+      })
+      .catch((error) => {
+        // console.log(error.message);
+      });
   };
 
   const cancelInterview = function (id) {

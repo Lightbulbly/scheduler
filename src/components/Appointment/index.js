@@ -35,7 +35,7 @@ export default function Appointment(props) {
         transition(SHOW);
       })
       .catch((err) => {
-        // console.log(err);
+        // console.log("here it is", err);
         transition(ERROR_SAVE, true);
       });
   };
