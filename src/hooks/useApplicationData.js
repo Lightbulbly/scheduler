@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  getAppointmentsForDay,
-  // getInterview,
-  // getInterviewersForDay,
-} from "../helpers/selectors";
+import { getAppointmentsForDay } from "helpers/selectors";
 
 export default function useApplicationData(initial) {
   const [state, setState] = useState({
@@ -40,6 +36,21 @@ export default function useApplicationData(initial) {
   // });
 
   // pass bookInterview to each Appointment component as props.
+  const updateSpots = function (requestType) {
+    let stateDaysCopy = [...state.days];
+    const days = stateDaysCopy.map((day) => {
+      if (day.name === state.day) {
+        if (requestType === "bookAppointment") {
+          return { ...day, spots: day.spots - 1 };
+        } else {
+          return { ...day, spots: day.spots + 1 };
+        }
+      } else {
+        return { ...day };
+      }
+    });
+    return days;
+  };
 
   const bookInterview = function (id, interview) {
     const appointment = {
@@ -51,39 +62,21 @@ export default function useApplicationData(initial) {
       ...state.appointments,
       [id]: appointment,
     };
-    console.log("here", id, interview);
-    console.log("appointments", appointments);
-    console.log("appointment", appointment);
+    // console.log("here", id, interview);
+    // console.log("appointments", appointments);
+    // console.log("appointment", appointment);
 
-    const spotsLeft = function (appointments) {
-      // console.log(appointments);
-      // console.log(state.day);
-      // console.log(state.days);
-      let counter = 0;
-      state.days.forEach((ele) => {
-        if (ele.name === state.day) {
-          // console.log("here", day);
-          ele.appointments.forEach((appointment) => {
-            // console.log(appointment, appointments[appointment]);
-            if (appointments[appointment].interview === null) {
-              counter++;
-            }
-          });
-        }
-      });
-      setState({ state, spots: counter });
-      return counter;
-    };
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then((res) => {
         // console.log("1 the state", state);
         // console.log("here?", appointments);
-        spotsLeft(appointments);
         setState((prev) => ({
           ...prev,
           appointments,
+          days: updateSpots("bookAppointment"),
         }));
+
         // console.log("2 the state", state);
       })
       .catch((error) => {
@@ -105,6 +98,7 @@ export default function useApplicationData(initial) {
       setState((prev) => ({
         ...prev,
         appointments,
+        days: updateSpots(""),
       }));
     });
     // .catch((err) => Promise.reject(err));
