@@ -32,7 +32,7 @@ describe("Form", () => {
   it("validates that the student name is not blank", () => {
     const onSave = jest.fn();
     const { getByText } = render(
-      <Form interviewers={interviewers} onSave={onSave} />
+      <Form interviewers={interviewers} onSave={onSave} interviewer={1} />
     );
     fireEvent.click(getByText("Save"));
     /* 1. validation is shown */
@@ -47,11 +47,11 @@ describe("Form", () => {
     const { queryByText, getByText } = render(
       <Form
         interviewers={interviewers}
+        interviewer={1}
         student="Lydia Miller-Jones"
         onSave={onSave}
       />
     );
-
     fireEvent.click(getByText("Save"));
 
     /* 3. validation is not shown */
@@ -61,6 +61,6 @@ describe("Form", () => {
     expect(onSave).toHaveBeenCalledTimes(1);
 
     /* 5. onSave is called with the correct arguments */
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 });
