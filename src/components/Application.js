@@ -15,25 +15,17 @@ export default function Application(props) {
 
   const interviewers = getInterviewersForDay(state, state.day);
 
+  // Map over the appointments array to create a list in the schedule section.
   const appointments = getAppointmentsForDay(state, state.day).map(
     (appointment) => {
-      // console.log("appointment", appointment);
-      // console.log("appointment.interview", appointment.interview);
-
       const interview = getInterview(state, appointment.interview);
-      // console.log("here", typeof interview, interview);
-
       return (
         <Appointment
-          // key={index}
           key={appointment.id}
           {...appointment}
-          // interview={interview || {}}
           interview={interview}
           interviewers={interviewers}
-          // {...interview}
           bookInterview={bookInterview}
-          // save={save}
           cancelInterview={cancelInterview}
         />
       );
@@ -50,7 +42,6 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          {/* <DayList days={days} day={day} setDay={setDay} /> */}
           <DayList days={state.days} value={state.day} onChange={setDay} />
         </nav>
         <img
@@ -60,8 +51,6 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {/* map over the appointments array to create a list in the schedule section. */}
-        {/* {renderAppointments} */}
         {appointments}
         <Appointment time={"5pm"} />
       </section>

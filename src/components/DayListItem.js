@@ -4,13 +4,11 @@ import classNames from "classnames";
 
 export default function DayListItem(props) {
   const { name, spots, setDay, selected } = props;
-  // console.log("props", props);
   var dayClass = classNames("day-list", {
     "day-list__item": name,
     "day-list__item--selected": selected,
     "day-list__item--full": spots === 0,
   });
-  // console.log("dayClass:", dayClass);
 
   const formatSpots = () => {
     if (spots === 0) {

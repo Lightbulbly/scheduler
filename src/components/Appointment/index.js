@@ -65,14 +65,8 @@ export default function Appointment(props) {
     transition(EDIT);
   };
 
-  // console.log(id, time, interview);
-  // console.log(interview);
-
   return (
     <article className="appointment">
-      {/* time ? <article className="appointment"> Appointment at {props.time}</article> :<article className="appointment"> No Appointments
-  </article> */}
-
       <Header time={time} />
 
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE, false)} />}
@@ -87,14 +81,10 @@ export default function Appointment(props) {
       {mode === CREATE && (
         <Form
           interviewers={interviewers}
-          // interviewers={[]}
           onCancel={() => {
             back();
           }}
           onSave={save}
-          // onSave={() => {
-          //   transition(SHOW, true);
-          // }}
         />
       )}
       {mode === EDIT && (

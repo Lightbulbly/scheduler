@@ -7,6 +7,7 @@ export default function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
+
   function reset() {
     setStudent("");
     setInterviewer(null);
@@ -47,7 +48,6 @@ export default function Form(props) {
           onChange={setInterviewer}
           interviewers={props.interviewers}
         />
-        {/* interviewers, onChange, value */}
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
@@ -62,5 +62,3 @@ export default function Form(props) {
     </main>
   );
 }
-// .add("Edit", ()=><Form student="" interviewer="2" interviewers={interviewers} onSave={action("onSave")} onCancel={action("onCancel")}/>)
-// .add("Create", ()=><Form interviewers={interviewers} onSave={action("onSave")} onCancel={action("onCancel")}/>);
