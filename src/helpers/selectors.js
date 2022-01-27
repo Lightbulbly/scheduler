@@ -17,6 +17,21 @@ export const getAppointmentsForDay = function (state, day) {
   return resultAppointments;
 };
 
+export const getSpotsForDay = function (day, appointments) {
+  let spots = 0;
+  // console.log(day, appointments);
+  //iterate the day's appointment id's
+  for (const id of day.appointments) {
+    const appointment = appointments[id];
+    if (!appointment.interview) {
+      spots++;
+    }
+  }
+  //count how many have null interview
+  // = spots
+  return spots;
+};
+
 export const getInterview = function (state, interview) {
   let appointmentsCopy = { ...state.appointments };
 

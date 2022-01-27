@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-// import { getAppointmentsForDay } from "helpers/selectors";
+import { getSpotsForDay } from "helpers/selectors";
 
 export default function useApplicationData(initial) {
   const [state, setState] = useState({
@@ -36,20 +36,17 @@ export default function useApplicationData(initial) {
   // });
 
   // pass bookInterview to each Appointment component as props.
-  const updateSpots = function (requestType) {
-    let stateDaysCopy = [...state.days];
-    const days = stateDaysCopy.map((day) => {
-      if (day.name === state.day) {
-        if (requestType === "bookAppointment") {
-          return { ...day, spots: day.spots - 1 };
-        } else {
-          return { ...day, spots: day.spots + 1 };
-        }
-      } else {
-        return { ...day };
-      }
+  const updateSpots = function (state, appointments) {
+    // console.log(state, appointments);
+    const dayObj = state.days.find((day) => {
+      return day.name === state.day;
     });
-    return days;
+    // console.log(dayObj);
+
+    const spots = getSpotsForDay(dayObj, appointments);
+
+    const day = { ...dayObj, spots };
+    return state.days.map((d) => (d.name === state.day ? day : d));
   };
 
   const bookInterview = function (id, interview) {
@@ -74,7 +71,7 @@ export default function useApplicationData(initial) {
         setState((prev) => ({
           ...prev,
           appointments,
-          days: updateSpots("bookAppointment"),
+          days: updateSpots(state, appointments),
         }));
 
         // console.log("2 the state", state);
@@ -98,7 +95,7 @@ export default function useApplicationData(initial) {
       setState((prev) => ({
         ...prev,
         appointments,
-        days: updateSpots(""),
+        days: updateSpots(state, appointments),
       }));
     });
     // .catch((err) => Promise.reject(err));
