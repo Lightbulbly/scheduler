@@ -63,22 +63,20 @@ export default function useApplicationData(initial) {
     // console.log("appointments", appointments);
     // console.log("appointment", appointment);
 
-    return axios
-      .put(`/api/appointments/${id}`, appointment)
-      .then((res) => {
-        // console.log("1 the state", state);
-        // console.log("here?", appointments);
-        setState((prev) => ({
-          ...prev,
-          appointments,
-          days: updateSpots(state, appointments),
-        }));
+    return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
+      // console.log("1 the state", state);
+      // console.log("here?", appointments);
+      setState((prev) => ({
+        ...prev,
+        appointments,
+        days: updateSpots(state, appointments),
+      }));
 
-        // console.log("2 the state", state);
-      })
-      .catch((error) => {
-        // console.log(error.message);
-      });
+      // console.log("2 the state", state);
+    });
+    // .catch((error) => {
+    // console.log(error.message);
+    // });
   };
 
   const cancelInterview = function (id) {

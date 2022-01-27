@@ -90,7 +90,6 @@ export default function Appointment(props) {
           // interviewers={[]}
           onCancel={() => {
             back();
-            back();
           }}
           onSave={save}
           // onSave={() => {
@@ -125,8 +124,6 @@ export default function Appointment(props) {
           message="Could not save appointment."
           onClose={() => {
             back();
-            back();
-            back();
           }}
         />
       )}
@@ -134,8 +131,6 @@ export default function Appointment(props) {
         <Error
           message="Could not delete appointment."
           onClose={() => {
-            back();
-            back();
             back();
           }}
         />
