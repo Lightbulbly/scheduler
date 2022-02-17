@@ -6,6 +6,13 @@ Scheduler makes appointment booking and tracking easy for users. They can book a
 
 Install dependencies with `npm install`.
 
+Dependencies:
+axios, classnames, normalize.css, prop-types,
+react, react-dom, react-scripts
+
+Install Scheduler API from the following link. It is the server database intended to be used Scheduler:
+https://github.com/lighthouse-labs/scheduler-api
+
 ## Running Webpack Development Server
 
 ```sh
