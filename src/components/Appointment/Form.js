@@ -18,16 +18,31 @@ export default function Form(props) {
   }
 
   function validate() {
-    if (!interviewer) {
+    if (!interviewer && !student) {
+      setError("please select interviewer and enter student name");
+      return;
+    }
+
+    if (!interviewer && student) {
       setError("must select interviewer");
       return;
     }
-    if (student === "") {
+    if (student === "" && interviewer) {
       setError("student name cannot be blank");
       return;
     }
     onSave(student, interviewer);
   }
+
+  // function validate() {
+  //   if (student === "") {
+  //     setError("student name cannot be blank");
+  //     return;
+  //   }
+
+  //   setError("");
+  //   props.onSave(student, interviewer);
+  // }
 
   return (
     <main className="appointment__card appointment__card--create">
